@@ -57,7 +57,11 @@ CREATE TABLE Meeting {
     duration FLOAT,
     start_time TIME,
 
-    PRIMARY KEY(meetingID)
+    --Many to Exactly 1 Relationship
+    userID INTEGER NOT NULL,
+
+    PRIMARY KEY(meetingID),
+    FOREIGN KEY(userID) REFERENCES Instructor(userID)
 };
 
 --Weak Entity of Meeting
@@ -130,6 +134,7 @@ CREATE TABLE Mentions {
     FOREIGN KEY(message_id, meetingID) REFERENCES Message(message_id, meetingID)
 }
 
+-- Student to Meeting (Many to Many)
 CREATE TABLE Attended {
     userID INTEGER,
     meetingID INTEGER,
@@ -141,4 +146,21 @@ CREATE TABLE Attended {
     FOREIGN KEY(userID) REFERENCES Student(userID),
     FOREIGN KEY(meetingID) REFERENCES Meeting(meetingID)
 }
+
+-- Course to Instructor (1...* to Many)
+CREATE TABLE Teaches {
+    userID INTEGER,
+    courseID INTEGER,
+
+    PRIMARY KEY(userID, courseID),
+    FOREIGN KEY(userID) REFERENCES Student(userID),
+    FOREIGN KEY(courseID) REFERENCES Course(courseID),
+}
+
+-- Hosted: Instructor to Meeting (Exactly 1 to Many) - IMPLEMENTED IN MEETING
+
+--BelongsTo: (Weak RelationshiP) Meeting to Meeting Recording - IMPLEMENTED IN WEAK ENTITY
+--PostAt: (Weak RelationshiP) Meeting to Message - IMPLEMENTED IN WEAK ENTITY
+
+
 
