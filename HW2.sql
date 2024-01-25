@@ -1,9 +1,7 @@
 -- Zachary Szeto
 
---List of Issues/Questions
-    --How to make mentions work for instructor or student? Should I create a parent class with attributes of instructors and students or does how I am doing it work
-    --Should we use the time type for start_time, end_time, etc
-
+-- The total participation of Messages in "PostedBy" can't be enforced in the schema
+-- The total participation of Messages in "Mentions" can't be enforced in the schema
 
 ------------------------------------------------------------------------------- ENTITIES -------------------------------------------------------------------------------    
 CREATE TABLE Student {
@@ -57,11 +55,15 @@ CREATE TABLE Meeting {
     duration FLOAT,
     start_time TIME,
 
-    --Many to Exactly 1 Relationship
+    --AssociatedWith
+    courseID INTEGER,
+
+    --Hosted
     userID INTEGER NOT NULL,
 
     PRIMARY KEY(meetingID),
     FOREIGN KEY(userID) REFERENCES Instructor(userID)
+    FOREIGN KEY(courseID) REFERENCES Course(courseID)
 };
 
 --Weak Entity of Meeting
@@ -94,6 +96,7 @@ CREATE TABLE Message {
     text VARCHAR2(50),
 
     PRIMARY KEY(message_id, meetingID),
+
     FOREIGN KEY(meetingID) REFERENCES Meeting(meetingID)
 };
 
@@ -121,18 +124,6 @@ CREATE TABLE Wacthed {
     FOREIGN KEY(number, meetingID) REFERENCES MeetingRecording(number, meetingID)
 }
 
---User (Student or Instructor) to Message (Many to Many)
-CREATE TABLE Mentions {
-    userID INTEGER,
-    message_id INTEGER,
-    meetingID INTEGER,
-    
-    PRIMARY KEY(userID, message_id, meetingID),
-
-    FOREIGN KEY(userID) REFERENCES Student(userID),
-    FOREIGN KEY(userID) REFERENCES Instructor(userID),
-    FOREIGN KEY(message_id, meetingID) REFERENCES Message(message_id, meetingID)
-}
 
 -- Student to Meeting (Many to Many)
 CREATE TABLE Attended {
@@ -156,8 +147,6 @@ CREATE TABLE Teaches {
     FOREIGN KEY(userID) REFERENCES Student(userID),
     FOREIGN KEY(courseID) REFERENCES Course(courseID),
 }
-
--- Hosted: Instructor to Meeting (Exactly 1 to Many) - IMPLEMENTED IN MEETING
 
 --BelongsTo: (Weak RelationshiP) Meeting to Meeting Recording - IMPLEMENTED IN WEAK ENTITY
 --PostAt: (Weak RelationshiP) Meeting to Message - IMPLEMENTED IN WEAK ENTITY
