@@ -1,16 +1,16 @@
 -- Zachary Szeto
-DROP TABLE Student;
-DROP TABLE Instructor;
-DROP TABLE InstructorAF;
-DROP TABLE Course;
-DROP TABLE Meeting;
-DROP TABLE MeetingRecording;
+DROP TABLE EnrolledIn;
+DROP TABLE Wacthed;
+DROP TABLE Attended;
+DROP TABLE Teaches;
 DROP TABLE MeetingRecordingTags;
 DROP TABLE Message;
-DROP TABLE EnrolledIn;
-DROP TABLE Teaches;
-DROP TABLE Attended;
-DROP TABLE Wacthed;
+DROP TABLE MeetingRecording;
+DROP TABLE Meeting;
+DROP TABLE Course;
+DROP TABLE InstructorAF;
+DROP TABLE Instructor;
+DROP TABLE Student;
 
 -- The total participation of Messages in "PostedBy" can't be enforced in the schema
 -- The total participation of Messages in "Mentions" can't be enforced in the schema
@@ -65,7 +65,7 @@ CREATE TABLE Meeting (
     title VARCHAR2(15),
     passcode VARCHAR2(15),
     duration FLOAT,
-    start_time TIME,
+    start_time TIMESTAMP,
 
     --AssociatedWith
     courseID INTEGER,
@@ -74,29 +74,29 @@ CREATE TABLE Meeting (
     userID INTEGER NOT NULL,
 
     PRIMARY KEY(meetingID),
-    FOREIGN KEY(userID) REFERENCES Instructor(userID)
+    FOREIGN KEY(userID) REFERENCES Instructor(userID),
     FOREIGN KEY(courseID) REFERENCES Course(courseID)
 );
 
 --Weak Entity of Meeting
 CREATE TABLE MeetingRecording (
-    number INTEGER,
+    Recording_number INTEGER,
     meetingID INTEGER,
-    start TIME,
-    end TIME,
+    start_time TIMESTAMP,
+    end_time TIMESTAMP,
     
-    PRIMARY KEY(number, meetingID),
+    PRIMARY KEY(Recording_number, meetingID),
     FOREIGN KEY(meetingID) REFERENCES Meeting(meetingID)
 );
 
 --Multivalued Attribute of MeetingRecording
 CREATE TABLE MeetingRecordingTags (
-    number INTEGER,
+    Recording_number INTEGER,
     meetingID INTEGER,
-    tag VARCHAR2(15),
+    Recording_tags VARCHAR2(15),
 
-    PRIMARY KEY(number, meetingID, tag,),
-    FOREIGN KEY(number, meetingID) REFERENCES MeetingRecording(number, meetingID),
+    PRIMARY KEY(Recording_number, meetingID, Recording_tags),
+    FOREIGN KEY(Recording_number, meetingID) REFERENCES MeetingRecording(Recording_number, meetingID),
     FOREIGN KEY(meetingID) REFERENCES Meeting(meetingID)
 );
 
@@ -104,7 +104,7 @@ CREATE TABLE MeetingRecordingTags (
 CREATE TABLE Message (
     message_id INTEGER,
     meetingID INTEGER,
-    time TIME,
+    msg_time TIMESTAMP,
     text VARCHAR2(50),
 
     PRIMARY KEY(message_id, meetingID),
@@ -128,12 +128,12 @@ CREATE TABLE EnrolledIn (
 -- Student to Meeting Recording (Many to Many)
 CREATE TABLE Wacthed (
     userID INTEGER,
-    number INTEGER,
+    Recording_number INTEGER,
     meetingID INTEGER,
 
-    PRIMARY KEY(userID, number, meetingID),
+    PRIMARY KEY(userID, Recording_number, meetingID),
     FOREIGN KEY(userID) REFERENCES Student(userID),
-    FOREIGN KEY(number, meetingID) REFERENCES MeetingRecording(number, meetingID)
+    FOREIGN KEY(Recording_number, meetingID) REFERENCES MeetingRecording(Recording_number, meetingID)
 );
 
 
@@ -142,8 +142,8 @@ CREATE TABLE Attended (
     userID INTEGER,
     meetingID INTEGER,
 
-    from time,
-    to time,
+    joined_time TIMESTAMP,
+    left_time TIMESTAMP,
     
     PRIMARY KEY(userID, meetingID),
     FOREIGN KEY(userID) REFERENCES Student(userID),
