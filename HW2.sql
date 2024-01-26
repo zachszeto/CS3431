@@ -1,10 +1,22 @@
 -- Zachary Szeto
+DROP TABLE Student;
+DROP TABLE Instructor;
+DROP TABLE InstructorAF;
+DROP TABLE Course;
+DROP TABLE Meeting;
+DROP TABLE MeetingRecording;
+DROP TABLE MeetingRecordingTags;
+DROP TABLE Message;
+DROP TABLE EnrolledIn;
+DROP TABLE Teaches;
+DROP TABLE Attended;
+DROP TABLE Wacthed;
 
 -- The total participation of Messages in "PostedBy" can't be enforced in the schema
 -- The total participation of Messages in "Mentions" can't be enforced in the schema
 
 ------------------------------------------------------------------------------- ENTITIES -------------------------------------------------------------------------------    
-CREATE TABLE Student {
+CREATE TABLE Student (
     --User Attributes
     userID INTEGER,
     firstname VARCHAR2(15),
@@ -14,9 +26,9 @@ CREATE TABLE Student {
     password VARCHAR2(30),
 
     PRIMARY KEY (userID)
-};
+);
 
-CREATE TABLE Instructor {
+CREATE TABLE Instructor (
     --User Attributes
     userID INTEGER,
     firstname VARCHAR2(15),
@@ -29,26 +41,26 @@ CREATE TABLE Instructor {
     title VARCHAR2(15),
 
     PRIMARY KEY (userID)
-};
+);
 
 --Multivalued Attribute of Instructor
-CREATE TABLE InstructorAF {
+CREATE TABLE InstructorAF (
     userID INTEGER,
     academic_fields VARCHAR2(30),
 
     PRIMARY KEY(userID, academic_fields),
     FOREIGN KEY(userID) REFERENCES Instructor(userID)
-};
+);
 
-CREATE TABLE Course {
+CREATE TABLE Course (
     courseID INTEGER,
     description VARCHAR2(50),
     title VARCHAR2(30),
 
     PRIMARY KEY(courseID)
-};
+);
 
-CREATE TABLE Meeting {
+CREATE TABLE Meeting (
     meetingID INTEGER,
     title VARCHAR2(15),
     passcode VARCHAR2(15),
@@ -64,10 +76,10 @@ CREATE TABLE Meeting {
     PRIMARY KEY(meetingID),
     FOREIGN KEY(userID) REFERENCES Instructor(userID)
     FOREIGN KEY(courseID) REFERENCES Course(courseID)
-};
+);
 
 --Weak Entity of Meeting
-CREATE TABLE MeetingRecording {
+CREATE TABLE MeetingRecording (
     number INTEGER,
     meetingID INTEGER,
     start TIME,
@@ -75,10 +87,10 @@ CREATE TABLE MeetingRecording {
     
     PRIMARY KEY(number, meetingID),
     FOREIGN KEY(meetingID) REFERENCES Meeting(meetingID)
-};
+);
 
 --Multivalued Attribute of MeetingRecording
-CREATE TABLE MeetingRecordingTags {
+CREATE TABLE MeetingRecordingTags (
     number INTEGER,
     meetingID INTEGER,
     tag VARCHAR2(15),
@@ -86,10 +98,10 @@ CREATE TABLE MeetingRecordingTags {
     PRIMARY KEY(number, meetingID, tag,),
     FOREIGN KEY(number, meetingID) REFERENCES MeetingRecording(number, meetingID),
     FOREIGN KEY(meetingID) REFERENCES Meeting(meetingID)
-};
+);
 
 --Weak Entity of Meeting
-CREATE TABLE Message {
+CREATE TABLE Message (
     message_id INTEGER,
     meetingID INTEGER,
     time TIME,
@@ -98,12 +110,12 @@ CREATE TABLE Message {
     PRIMARY KEY(message_id, meetingID),
 
     FOREIGN KEY(meetingID) REFERENCES Meeting(meetingID)
-};
+);
 
 ------------------------------------------------------------------------------- RELATIONSHIPS -------------------------------------------------------------------------------
 
 -- Student to Course (Many to Many)
-CREATE TABLE EnrolledIn {
+CREATE TABLE EnrolledIn (
     userID INTEGER,
     courseID INTEGER,
 
@@ -111,10 +123,10 @@ CREATE TABLE EnrolledIn {
 
     FOREIGN KEY(userID) REFERENCES Student(userID),
     FOREIGN KEY(courseID) REFERENCES Course(courseID)
-}
+);
 
 -- Student to Meeting Recording (Many to Many)
-CREATE TABLE Wacthed {
+CREATE TABLE Wacthed (
     userID INTEGER,
     number INTEGER,
     meetingID INTEGER,
@@ -122,11 +134,11 @@ CREATE TABLE Wacthed {
     PRIMARY KEY(userID, number, meetingID),
     FOREIGN KEY(userID) REFERENCES Student(userID),
     FOREIGN KEY(number, meetingID) REFERENCES MeetingRecording(number, meetingID)
-}
+);
 
 
 -- Student to Meeting (Many to Many)
-CREATE TABLE Attended {
+CREATE TABLE Attended (
     userID INTEGER,
     meetingID INTEGER,
 
@@ -136,20 +148,17 @@ CREATE TABLE Attended {
     PRIMARY KEY(userID, meetingID),
     FOREIGN KEY(userID) REFERENCES Student(userID),
     FOREIGN KEY(meetingID) REFERENCES Meeting(meetingID)
-}
+);
 
 -- Course to Instructor (1...* to Many)
-CREATE TABLE Teaches {
+CREATE TABLE Teaches (
     userID INTEGER,
     courseID INTEGER,
 
     PRIMARY KEY(userID, courseID),
     FOREIGN KEY(userID) REFERENCES Student(userID),
-    FOREIGN KEY(courseID) REFERENCES Course(courseID),
-}
+    FOREIGN KEY(courseID) REFERENCES Course(courseID)
+);
 
 --BelongsTo: (Weak RelationshiP) Meeting to Meeting Recording - IMPLEMENTED IN WEAK ENTITY
 --PostAt: (Weak RelationshiP) Meeting to Message - IMPLEMENTED IN WEAK ENTITY
-
-
-
