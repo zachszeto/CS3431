@@ -14,7 +14,7 @@ R2 = Teaches ⨝ course_id = Course.course_id (π course_id, title, description(
 --Joining Filtered Instructors with Courses
 R3 = R1 ⨝ Teaches.instructor_id = instructor_id R2
 
---Removing Instructor Id 
+--Removing Instructor.instructor_id, Teaches.course_id, and	Teaches.instructor_id 
 π Course.course_id, Course.title, Course.description (R3)
 
 
