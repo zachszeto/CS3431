@@ -41,3 +41,5 @@ R2 = R1 ⨝ (meeting_id = Meeting.meeting_id) Meeting
 R3 = σ course_id = 'CS451'(R2)
 R4 = R3 ⨝ (Meeting.meeting_id = MeetingRecording.meeting_id) MeetingRecording
 π student_id, title, course_id, recording_number R4
+
+--Q6
