@@ -67,5 +67,15 @@ R6 = R5 ⨝ R4
 σ (num_of_instructors > num_of_students) R6
 
 --Q9
+R1 = π meeting_id, title, duration (Meeting)
+R2 = γ maxDuration ← max(duration)(R1)
+R3 = R1 ⨝ (duration = maxDuration) R2
+π meeting_id, title, duration R3
 
+--Q10
+R1 = Meeting ⨝ (Meeting.meeting_id = Attended.meeting_id) Attended
+R2 = γ Meeting.meeting_id, title; COUNT(student_id)→num_attendees (R1)
+R3 = γ max_attended ← max(num_attendees)(R2)
+R4 = R2 ⨝ (num_attendees = max_attended) R3
+π Meeting.title, max_attended (R4)
 
