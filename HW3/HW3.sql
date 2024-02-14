@@ -7,29 +7,18 @@ R3 = π Meeting.title, Meeting.course_id, User.firstName, User.lastName (R2)
 τ Meeting.course_id asc (R3)
 
 --Q2:
---Finding Instructors with title of Regents Professor
---Mapping an Instructor ID to a Course
---Joining Filtered Instructors with Courses
---Removing Instructor.instructor_id, Teaches.course_id, and	Teaches.instructor_id 
 R1 = π instructor_id(σ title = 'Regents Professor' (Instructor))
 R2 = Teaches ⨝ course_id = Course.course_id (π course_id, title, description(Course))
 R3 = R1 ⨝ Teaches.instructor_id = instructor_id R2
 π Course.course_id, Course.title, Course.description (R3)
 
 --Q3
---All user_id who posted messages
---ALl Users who didn't post a message
---Student Ids of those users
---Project student_id, email, first name, and last name
 R1 = π user_id(User) - π user_id(Message) ∩ π user_id User
 R2 = R1 ⨝ (user_id = student_id) (Student) 
 R3  = R2 ⨝ User
 π student_id, email, firstName, lastName (R3)
 
---Q4 NOT FINISHED R5 Prob not natural Join
---Joining Instructor and Academic Feilds
---Selecting if academic field = Machine Learning
---Joining with User to get firstName, lastName, etc
+--Q4
 R1 = Instructor ⨝ Instructor.instructor_id = AcademicFields.instructor_id AcademicFields
 R2 = σ academicfield = 'Machine Learning' (R1)
 R3 = R2 ⨝ Instructor.instructor_id = User.user_id User
