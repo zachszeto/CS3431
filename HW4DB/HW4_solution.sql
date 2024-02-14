@@ -62,3 +62,17 @@ GROUP BY
 
 HAVING COUNT(T.course_id) > 2;
 
+--Q5
+
+--Q6
+SELECT DISTINCT S.student_id, C.course_id
+FROM Student S, Course C, EnrolledIn E, Meeting M, Attended A
+
+WHERE
+    S.student_id = E.student_id
+    AND C.course_id = E.course_id
+    AND M.meeting_id = A.meeting_id
+    AND A.student_id != S.student_id
+
+ORDER BY S.student_id;
+
