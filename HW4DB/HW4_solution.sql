@@ -45,13 +45,20 @@ JOIN Message M2 ON
 --Q4
 SELECT U.firstname, U.lastname
 
-FROM User U, Instructor I, AcademicFields AF, Teaches T, Course C
+FROM Users U, Instructor I, AcademicFields AF1, AcademicFields AF2, Teaches T, Course C
 
 WHERE
     U.user_id = I.instructor_id
     AND I.instructor_id = T.instructor_id 
     AND C.course_id = T.course_id
+    AND I.instructor_id = AF1.instructor_id
+    AND I.instructor_id = AF2.instructor_id
+    AND AF1.academicfield = 'Machine Learning'
+    AND AF2.academicfield = 'Artificial Intelligence'
 
-HAVING COUNT(T.course_id) > 2
+GROUP BY
+    U.firstname,
+    U.lastname
 
-GROUP BY 
+HAVING COUNT(T.course_id) > 2;
+
