@@ -22,7 +22,7 @@ def cleanStr4SQL(s):
 
 def insert2BusinessTable():
     #reading the JSON file
-    with open('phase2\yelp_business.JSON','r') as f:    #TODO: update path for the input file
+    with open('phase2Data\yelp_business.JSON','r') as f:    #TODO: update path for the input file
         line = f.readline()
         count_line = 0
 
@@ -57,13 +57,13 @@ def insert2BusinessTable():
         cur.close()
         conn.close()
 
-    print(count_line)
+    print("Business: " + str(count_line))
     #outfile.close()  #uncomment this line if you are writing the INSERT statements to an output file.
     f.close()
 
 def insert2UsersTable():
     #reading the JSON file
-    with open('phase2\yelp_user.JSON','r') as f:    #TODO: update path for the input file
+    with open('phase2Data\yelp_user.JSON','r') as f:    #TODO: update path for the input file
         line = f.readline()
         count_line = 0
 
@@ -99,13 +99,13 @@ def insert2UsersTable():
         cur.close()
         conn.close()
 
-    print(count_line)
+    print("User: " + str(count_line))
     #outfile.close()  #uncomment this line if you are writing the INSERT statements to an output file.
     f.close()
 
 def insert2TipsTable():
     #reading the JSON file
-    with open('phase2\yelp_tip.JSON','r') as f:    #TODO: update path for the input file
+    with open('phase2Data\yelp_tip.JSON','r') as f:    #TODO: update path for the input file
         line = f.readline()
         count_line = 0
 
@@ -141,14 +141,14 @@ def insert2TipsTable():
         cur.close()
         conn.close()
 
-    print(count_line)
+    print("Tips: " + str(count_line))
     #outfile.close()  #uncomment this line if you are writing the INSERT statements to an output file.
     f.close()
 
 
 def insert2FriendsTable():
     #reading the JSON file
-    with open('phase2\yelp_user.JSON','r') as f:    #TODO: update path for the input file
+    with open('phase2Data\yelp_user.JSON','r') as f:    #TODO: update path for the input file
         line = f.readline()
         count_line = 0
 
@@ -186,7 +186,7 @@ def insert2FriendsTable():
         cur.close()
         conn.close()
 
-    print(count_line)
+    print("Friends: " + str(count_line))
     #outfile.close()  #uncomment this line if you are writing the INSERT statements to an output file.
     f.close()
 
@@ -201,7 +201,7 @@ def get_attributes(attributes):
 
 def insert2BATable():
     #reading the JSON file
-    with open('phase2\yelp_business.JSON','r') as f:    #TODO: update path for the input file
+    with open('phase2Data\yelp_business.JSON','r') as f:    #TODO: update path for the input file
         line = f.readline()
         count_line = 0
 
@@ -245,13 +245,13 @@ def insert2BATable():
         cur.close()
         conn.close()
 
-    print(count_line)
+    print("Business Attributes: " + str(count_line))
     #outfile.close()  #uncomment this line if you are writing the INSERT statements to an output file.
     f.close()
 
 def insert2BCTable():
     #reading the JSON file
-    with open('phase2\yelp_business.JSON','r') as f:    #TODO: update path for the input file
+    with open('phase2Data\yelp_business.JSON','r') as f:    #TODO: update path for the input file
         line = f.readline()
         count_line = 0
 
@@ -291,14 +291,14 @@ def insert2BCTable():
         cur.close()
         conn.close()
 
-    print("Business Count:" + count_line)
+    print("Business Category: " + str(count_line))
     #outfile.close()  #uncomment this line if you are writing the INSERT statements to an output file.
     f.close()
 
 insert2BusinessTable()
-#insert2BCTable()
+insert2BCTable()
 insert2BATable()
-#insert2UsersTable()
-#insert2FriendsTable()
-#insert2TipsTable()
+insert2UsersTable()
+insert2FriendsTable()
+insert2TipsTable()
 
