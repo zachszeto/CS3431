@@ -17,10 +17,10 @@ EXCEPTION
 END;
 /
 
---Test Select Statement
-SELECT user_id
+--Test is_student
+SELECT user_id, firstname, lastname
 FROM Users
-WHERE is_student(user_id) = 'student'; 
+WHERE is_student(user_id) = 'student';
 
 
 --Q2
@@ -54,7 +54,7 @@ BEGIN
         title => 'Professor'
     );
 END;
-/
+/  
 
 --Q3
 CREATE or REPLACE TRIGGER check_passcode
@@ -69,8 +69,8 @@ END;
 
 --Test check_passcode
     --Insert Test
-    INSERT INTO Meeting (meeting_id, course_id, passcode, meeting_date)
-    VALUES (1, 1001, NULL, SYSDATE);
+    INSERT INTO Meeting	(meeting_id, title, passcode, meeting_time,  duration, course_id, instructor_id) 
+    VALUES (23, 'Lecture 451 - 1', NULL, to_timestamp('2023/01/13 01:10', 'YYYY/MM/DD HH:MI PM'), 51, 'CS500', 1);
     --Update Test
     UPDATE Meeting
     SET passcode = NULL
@@ -87,7 +87,7 @@ BEGIN
 END;
 /
 
---Test check_passcode
+--Test set_description
     --Insert Test
     INSERT INTO Course (course_id, title, description)
     VALUES ('CS500', 'Operating Systems', NULL);
